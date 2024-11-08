@@ -8,7 +8,7 @@ let winner
 let tie
 
 /*------------------------ Cached Element References ------------------------*/
-// Store cached element references.
+//2) Store cached element references.
 
 // a. In a constant called squareEls, store the nine elements representing the squares on the page.
 
@@ -22,13 +22,13 @@ const messageEl = document.querySelector('#message')
 // console.log(messageEl)
 
 /*-------------------------------- Functions --------------------------------*/
-
-/*----------------------------- Event Listeners -----------------------------*/
-
-//2) Store cached element references.
-
 //3) Upon loading, the game state should be initialized, and a function should
 //   be called to render this game state.
+// a. Create a function called init.
+
+// b. Call the init function when the app loads.
+
+/*----------------------------- Event Listeners -----------------------------*/
 
 //4) The state of the game should be rendered to the user.
 
