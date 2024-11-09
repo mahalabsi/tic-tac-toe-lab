@@ -1,61 +1,95 @@
-/*-------------------------------- Constants --------------------------------*/
-const choices = ['X', 'O']
-/*---------------------------- Variables (state) ----------------------------*/
+const squareEls = document.querySelectorAll('.sqr')
+const messageEls = document.querySelector('#message')
+
+console.dir(squareEls)
+console.dir(messageEls)
+
+const turnX = 'X'
+const turnO = 'O'
+const winningCombos = [
+  [0, 1, 2],
+  [3, 4, 5],
+  [6, 7, 8],
+  [0, 3, 6],
+  [1, 4, 7],
+  [2, 5, 8],
+  [0, 4, 8],
+  [2, 4, 6]
+]
+
 //1) Define the required variables used to track the state of the game.
-let board = ['', '', '', '', '', '', '', '', '']
-let turn = 'X'
+let board = Array(9).fill('')
+let currentPlayer = turnX
 let winner = false
 let tie = false
 
-/*------------------------ Cached Element References ------------------------*/
-//2) Store cached element references.
-
-// a. In a constant called squareEls, store the nine elements representing the squares on the page.
-
-const squareEls = document.querySelector('.board')
-
-// b. In a constant called messageEl, store the element that displays the game's status on the page.
-
-const messageEl = document.querySelector('#message')
-
-console.log(squareEls)
-console.log(messageEl)
-
 /*-------------------------------- Functions --------------------------------*/
-//3) Upon loading, the game state should be initialized, and a function should
-//   be called to render this game state.
-
-// a. Create a function called init.
-// b. Call the init function when the app loads.
-// c. Set the board variable to an array containing nine empty strings ('') representing empty squares.
-// d. Set the turn to X - this will represent player X.
-// 💡 Player O will be represented by O.
-// e. Set the winner to false.
-// 💡 A false value in winner means that there is no winner yet. A value of true in winner will mean that a player has won.
-// Once winner is set to true, we can determine which player won by whose turn it was when the winning move was played.
-// f. Set tie to false.
-// 💡 A true value in tie will mean that the board array contains no more empty strings ('') and will be used to render a tie message if winner is still false by the time all squares are played.
-// g. Call a function named render() at the end of the init() function.
-
 const init = () => {
-  // render () => {
-  //   console.log('The Game Has Started!')
-  // }
+  board.fill('')
+  currentPlayer = turnX
+  winner = false
+  tie = false
 }
 
-// const updateBoard = () => {
-
-// }
+const render = () => {
+  updateBoard()
+  updateMessage()
+}
 
 const updateBoard = () => {
-  squareEls.forEach((squareEl, index) => {
-    squareEl.textContent = board[index]
-    squareEl.classList.remove('X', 'O')
-    if (board[index] !== '') {
-      squareEl.classList.add(board[index])
-    }
+  board.forEach((cell, index) => {
+    squareEls[index].textContent = cell
+    // Add more styling here, e.g., using CSS classes
   })
 }
+
+const updateMessage = () => {
+  if (!winner && !tie) {
+    messageEls.textContent = `${currentPlayer}'s turn`
+  }
+  if (tie) {
+    messageEls.textContent = "It's a tie!"
+  } else {
+    messageEls.textContent = `${currentPlayer} wins!`
+  }
+}
+render()
+init()
+
+// console.dir(updateBoard)
+// console.dir(updateMessage)
+// const updateBoard = (board) => {
+//   squareEls.forEach((squareEl, index) => {
+//     squareEl.textContent = board[index]
+//     squareEl.classList.remove('X', 'O')
+//     if (board[index] !== '') {
+//       squareEl.classList.add(board[index])
+//     }
+//   })
+//   console.log(updateBoard)
+// }
+
+//
+
+// const updateMessage = () => {
+//   messageEl.textContent =
+//     !winner && !tie ? `${turn}'s turn` : tie ? "It's a tie!" : `${winner} wins!`
+//   console.log(updateMessage)
+// }
+// const init = () => {
+//   const render = () => {
+//     updateBoard()
+//     updateMessage()
+//   }
+//   console.log(init)
+// }
+
+// f. Invoke both the updateBoard and the updateMessage functions inside your render function.
+
+// const render = () => {
+//   updateBoard()
+//   updateMessage()
+// }
 
 /*----------------------------- Event Listeners -----------------------------*/
 
