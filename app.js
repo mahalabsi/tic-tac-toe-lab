@@ -20,6 +20,7 @@ const winningCombos = [
 //1) Define the required variables used to track the state of the game.
 let board = Array(9).fill('')
 let currentPlayer = turnX
+let computerChoice
 let winner = false
 let tie = false
 
@@ -29,6 +30,7 @@ const init = () => {
   currentPlayer = turnX
   winner = false
   tie = false
+  render()
 }
 
 const render = () => {
@@ -43,6 +45,11 @@ const updateBoard = () => {
   })
 }
 
+const getComputerChoice = () => {
+  const randomIndex = Math.floor(Math.random() * turnO.length)
+  computerChoice = turnO[randomIndex]
+}
+
 const updateMessage = () => {
   if (!winner && !tie) {
     messageEls.textContent = `${currentPlayer}'s turn`
@@ -53,7 +60,7 @@ const updateMessage = () => {
     messageEls.textContent = `${currentPlayer} wins!`
   }
 }
-render()
+
 init()
 
 // console.dir(updateBoard)
