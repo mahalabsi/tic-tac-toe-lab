@@ -1,6 +1,6 @@
 const squareEls = document.querySelectorAll('.sqr')
 const messageEls = document.querySelector('#message')
-
+const resetBtnEl = document.querySelector('#reset')
 console.dir(squareEls)
 console.dir(messageEls)
 
@@ -17,14 +17,12 @@ const winningCombos = [
   [2, 4, 6]
 ]
 
-//1) Define the required variables used to track the state of the game.
 let board = Array(9).fill('')
 let currentPlayer = turnX
 let computerChoice
 let winner = false
 let tie = false
 
-/*-------------------------------- Functions --------------------------------*/
 const init = () => {
   board.fill('')
   currentPlayer = turnX
@@ -41,13 +39,7 @@ const render = () => {
 const updateBoard = () => {
   board.forEach((cell, index) => {
     squareEls[index].textContent = cell
-    // Add more styling here, e.g., using CSS classes
   })
-}
-
-const getComputerChoice = () => {
-  const randomIndex = Math.floor(Math.random() * turnO.length)
-  computerChoice = turnO[randomIndex]
 }
 
 const updateMessage = () => {
@@ -63,40 +55,60 @@ const updateMessage = () => {
 
 init()
 
-// console.dir(updateBoard)
-// console.dir(updateMessage)
-// const updateBoard = (board) => {
-//   squareEls.forEach((squareEl, index) => {
-//     squareEl.textContent = board[index]
-//     squareEl.classList.remove('X', 'O')
-//     if (board[index] !== '') {
-//       squareEl.classList.add(board[index])
-//     }
-//   })
-//   console.log(updateBoard)
-// }
+const handleClick = (event) => {
+  const index = Array.from(squareEls).indexOf(event.target)
+  if (board[index] === '' && !winner && !tie) {
+    board[index] = currentPlayer
+    currentPlayer = currentPlayer === turnX ? turnO : turnX
 
-//
+    render()
+  }
+}
 
-// const updateMessage = () => {
-//   messageEl.textContent =
-//     !winner && !tie ? `${turn}'s turn` : tie ? "It's a tie!" : `${winner} wins!`
-//   console.log(updateMessage)
-// }
-// const init = () => {
-//   const render = () => {
-//     updateBoard()
-//     updateMessage()
-//   }
-//   console.log(init)
-// }
+squareEls.forEach((squareEl) => {
+  squareEl.addEventListener('click', handleClick)
+})
 
-// f. Invoke both the updateBoard and the updateMessage functions inside your render function.
+const placePiece = (index) => {
+  if (board[index] === '' && !winner && !tie) {
+    board[index] = currentPlayer
+    console.log(board) // For testing purposes
+    return true // Piece placed successfully
+  }
+  return false // Piece placement failed
+}
 
-// const render = () => {
-//   updateBoard()
-//   updateMessage()
-// }
+const checkForWinner = () => {
+  for (let combo of winningCombos) {
+    const [a, b, c] = combo
+    if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
+      winner = true
+      return
+    }
+  }
+}
+
+const checkForTie = () => {
+  if (winner) {
+    return // If there is a winner, exit the function
+  }
+
+  if (!board.includes('')) {
+    tie = true
+    console.log(tie) // For testing purposes
+  }
+}
+
+const switchPlayerTurn = () => {
+  if (winner) {
+    return // If there is a winner, exit the function
+  }
+
+  turn = turn === 'X' ? 'O' : 'X'
+  console.log(turn) // For testing purposes
+}
+
+resetBtnEl.addEventListener('click', init)
 
 /*----------------------------- Event Listeners -----------------------------*/
 
