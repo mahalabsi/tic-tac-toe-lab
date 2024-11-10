@@ -91,13 +91,13 @@ const placePiece = (index) => {
 }
 
 const checkForWinner = () => {
-  for (let combo of winningCombos) {
+  winningCombos.forEach((combo) => {
     const [a, b, c] = combo
-    if (board[a] !== '' && board[a] === board[b] && board[a] === board[c]) {
+    if (board[a] !== '' && board[a] === board[b] && board[b] === board[c]) {
       winner = true
       return
     }
-  }
+  })
 }
 
 const checkForTie = () => {
