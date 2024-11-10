@@ -18,8 +18,7 @@ const winningCombos = [
 ]
 
 let board = Array(9).fill('')
-let currentPlayer = turnX
-let computerChoice
+let currentPlayer = 'turnX'
 let winner = false
 let tie = false
 
@@ -39,27 +38,27 @@ const updateBoard = () => {
   })
 }
 
-const updateMessage = () => {
-  if (!winner && !tie) {
-    messageEls.textContent = `${currentPlayer}'s turn`
-  } else if (tie) {
-    messageEls.textContent = "It's a tie!"
-  } else if (winner) {
-    messageEls.textContent = `${currentPlayer} wins!`
-  } else {
-    return 'try again'
-  }
-}
-
 // const updateMessage = () => {
 //   if (!winner && !tie) {
 //     messageEls.textContent = `${currentPlayer}'s turn`
 //   } else if (tie) {
 //     messageEls.textContent = "It's a tie!"
-//   } else  {
+//   } else if (winner) {
 //     messageEls.textContent = `${currentPlayer} wins!`
+//   } else {
+//     return 'try again'
 //   }
 // }
+
+const updateMessage = () => {
+  if (winner === false && tie === false) {
+    messageEls.textContent = `${currentPlayer}'s turn`
+  } else if (winner === false && tie === true) {
+    messageEls.textContent = "It's a tie!"
+  } else {
+    messageEls.textContent = `${currentPlayer} wins!`
+  }
+}
 
 const render = () => {
   updateBoard()
@@ -68,13 +67,20 @@ const render = () => {
 init()
 
 const handleClick = (event) => {
-  const index = Array.from(squareEls).indexOf(event.target)
-  if (board[index] === '' && !winner && !tie) {
-    board[index] = currentPlayer
-    currentPlayer = currentPlayer === turnX ? turnO : turnX
+  // const index = Array.from(squareEls).indexOf(event.target)
+  // if (board[index] === '' && !winner && !tie) {
+  //   board[index] = currentPlayer
+  //   currentPlayer = currentPlayer === turnX ? turnO : turnX
 
-    render()
-  }
+  //   render()
+  // }
+  const squareIndex = event.target.id
+  if (board[squareIndex] || winner) return
+  placePiece(squareIndex)
+  checkForWinner()
+  checkForTie()
+  switchPlayerTurn()
+  render()
 }
 
 squareEls.forEach((squareEl) => {
@@ -82,18 +88,20 @@ squareEls.forEach((squareEl) => {
 })
 
 const placePiece = (index) => {
-  if (board[index] === '' && !winner && !tie) {
-    board[index] = currentPlayer
-    console.log(board) // For testing purposes
-    return true // Piece placed successfully
-  }
-  return false // Piece placement failed
+  // if (board[index] === '' && !winner && !tie) {
+  //   board[index] = currentPlayer
+  //   console.log(board) // For testing purposes
+  //   return true // Piece placed successfully
+  // }
+  // return false // Piece placement failed
+  board[index] = currentPlayer
 }
 
 const checkForWinner = () => {
   winningCombos.forEach((combo) => {
     const [a, b, c] = combo
-    if (board[a] !== '' && board[a] === board[b] && board[b] === board[c]) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) {
+      //if (board[a] !== '' && board[a] === board[b] && board[b] === board[c])
       winner = true
       return
     }
@@ -105,19 +113,19 @@ const checkForTie = () => {
     return // If there is a winner, exit the function
   }
 
-  if (!board.includes('')) {
+  if (!board.includes('') && !winner) {
     tie = true
     console.log(tie) // For testing purposes
   }
 }
 
 const switchPlayerTurn = () => {
-  if (winner) {
+  if (winner === true) {
     return // If there is a winner, exit the function
   }
 
   currentPlayer = currentPlayer === 'X' ? 'O' : 'X'
-  console.log(currentPlayer) // For testing purposes
+  // console.log(currentPlayer) // For testing purposes
 }
 
 resetBtnEl.addEventListener('click', init)
