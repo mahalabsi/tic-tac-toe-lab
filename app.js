@@ -23,17 +23,14 @@ let computerChoice
 let winner = false
 let tie = false
 
+messageEls.style.color = 'blue'
+
 const init = () => {
   board.fill('')
   currentPlayer = turnX
   winner = false
   tie = false
   render()
-}
-
-const render = () => {
-  updateBoard()
-  updateMessage()
 }
 
 const updateBoard = () => {
@@ -45,14 +42,29 @@ const updateBoard = () => {
 const updateMessage = () => {
   if (!winner && !tie) {
     messageEls.textContent = `${currentPlayer}'s turn`
-  }
-  if (tie) {
+  } else if (tie) {
     messageEls.textContent = "It's a tie!"
-  } else {
+  } else if (winner) {
     messageEls.textContent = `${currentPlayer} wins!`
+  } else {
+    return 'try again'
   }
 }
 
+// const updateMessage = () => {
+//   if (!winner && !tie) {
+//     messageEls.textContent = `${currentPlayer}'s turn`
+//   } else if (tie) {
+//     messageEls.textContent = "It's a tie!"
+//   } else  {
+//     messageEls.textContent = `${currentPlayer} wins!`
+//   }
+// }
+
+const render = () => {
+  updateBoard()
+  updateMessage()
+}
 init()
 
 const handleClick = (event) => {
@@ -104,18 +116,8 @@ const switchPlayerTurn = () => {
     return // If there is a winner, exit the function
   }
 
-  turn = turn === 'X' ? 'O' : 'X'
-  console.log(turn) // For testing purposes
+  currentPlayer = currentPlayer === 'X' ? 'O' : 'X'
+  console.log(currentPlayer) // For testing purposes
 }
 
 resetBtnEl.addEventListener('click', init)
-
-/*----------------------------- Event Listeners -----------------------------*/
-
-//4) The state of the game should be rendered to the user.
-
-//5) Define the required constants.
-
-//6) Handle a player clicking a square with a `handleClick` function.
-
-//7) Create Reset functionality.
